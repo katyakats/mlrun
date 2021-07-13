@@ -13,6 +13,7 @@
 # limitations under the License.
 import warnings
 from typing import TYPE_CHECKING, List, Optional
+import datetime
 
 import pandas as pd
 
@@ -211,6 +212,11 @@ class FeatureSetStatus(ModelObj):
 
     def update_target(self, target: DataTarget):
         self._targets.update(target)
+
+    def update_last_written_for_target(self, target_path: str, last_written: datetime.datetime):
+        for target in self._targets:
+            if target.path == target_path:
+                target.last_written = last_written
 
 
 class FeatureSet(ModelObj):

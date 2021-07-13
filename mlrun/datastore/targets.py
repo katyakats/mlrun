@@ -192,6 +192,7 @@ def add_target_steps(graph, resource, targets, to_df=False, final_step=None):
             features=features if not target.after_step else None,
             key_columns=key_columns,
             timestamp_key=timestamp_key,
+            featureset_status=resource.status,
         )
     if to_df:
         # add dataframe target, will return a dataframe
@@ -563,7 +564,7 @@ class ParquetTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         column_list = self._get_column_list(
             features=features,
@@ -607,6 +608,11 @@ class ParquetTarget(BaseStoreTarget):
         tuple_key_columns = []
         for key_column in key_columns:
             tuple_key_columns.append((key_column.name, key_column.value_type))
+
+        if self.attributes:
+            self.attributes["featureset_status"] = featureset_status
+        else:
+            self.attributes = {"featureset_status": featureset_status}
 
         graph.add_step(
             name=self.name or "ParquetTarget",
