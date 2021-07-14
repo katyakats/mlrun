@@ -236,7 +236,9 @@ def ingest(
     if run_config:
         # remote job execution
         run_config = run_config.copy() if run_config else RunConfig()
+        print("CHECKING!!!!!")
         if source.schedule and featureset.status.targets and featureset.status.targets[0].last_written:
+            print("ulala ulala setting start time")
             source.start_time = featureset.status.targets[0].last_written #for now the first. later min
             source.end_time = datetime.now()
         source, run_config.parameters = set_task_params(

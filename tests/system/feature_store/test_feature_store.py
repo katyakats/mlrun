@@ -900,9 +900,6 @@ class TestFeatureStore(TestMLRunSystem):
         assert len(vec_df) == 2
         assert vec_dict["data"]["moshe"] == 2000
 
-        return
-        sleep(600)
-
         data = pd.DataFrame(
             {
                 "time": [now, now + pd.Timedelta(minutes=1), now + pd.Timedelta(minutes=1)],
@@ -910,14 +907,20 @@ class TestFeatureStore(TestMLRunSystem):
                 "data": [50, 10, 25],
             }
         )
-        data.to_parquet(str(self.results_path / "second_iter.parquet"))
+        # writing down a remote source
+        target2 = ParquetTarget() #pass a path here?
+        data_set = fs.FeatureSet("data", entities=[Entity("first_name")])
+        fs.ingest(data_set, data, targets=[target2])
+
         sleep(60)
         resp = fs.get_offline_features(vec)
 
         vec_df = resp.to_dataframe()
         vec_dict = vec_df.to_dict()
+        print(vec_dict)
         assert len(vec_df) == 2  # the new ones are too "old"
         assert vec_dict["data"]["moshe"] == 50
+
 
 #     def test_443_play(self):
 #         from datetime import timedelta

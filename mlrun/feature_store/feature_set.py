@@ -214,8 +214,11 @@ class FeatureSetStatus(ModelObj):
         self._targets.update(target)
 
     def update_last_written_for_target(self, target_path: str, last_written: datetime.datetime):
+        print("HERE!!!!!!!!!!!! " + target_path + str(last_written))
         for target in self._targets:
+            print("first is " + target_path + " " + target.path)
             if target.path == target_path:
+                print("updating!!!!!!")
                 target.last_written = last_written
 
 
