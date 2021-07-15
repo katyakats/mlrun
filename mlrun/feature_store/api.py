@@ -269,6 +269,8 @@ def ingest(
 
         print("source.schedule is " + str(source.schedule))
         print("targers " + str(featureset.status.targets))
+        if len(featureset.status.targets) > 0:
+            print("there are targets!!!" + str(featureset.status.targets[0]))
 
         if source.schedule and featureset.status.targets and featureset.status.targets[0].last_written:
             print("ulala ulala setting start time")

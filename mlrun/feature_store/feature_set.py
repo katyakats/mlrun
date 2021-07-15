@@ -216,10 +216,8 @@ class FeatureSetStatus(ModelObj):
 
     def update_last_written_for_target(self, target_path: str, last_written: datetime.datetime):
         print("HERE!!!!!!!!!!!! " + target_path + str(last_written))
-        logger.info("HERE!!!!!!!!!!!! " + target_path + str(last_written))
         for target in self._targets:
             print("first is " + target_path + " " + target.path)
-            logger.info("first is " + target_path + " " + target.path)
             if target.path == target_path:
                 logger.info("updating!!!!!!")
                 print("updating!!!!!!")
@@ -600,6 +598,7 @@ class FeatureSet(ModelObj):
         as_dict["spec"]["features"] = as_dict["spec"].get(
             "features", []
         )  # bypass DB bug
+        print("savvvving " + str(as_dict))
         db.store_feature_set(as_dict, tag=tag, versioned=versioned)
 
     def reload(self, update_spec=True):
@@ -611,5 +610,6 @@ class FeatureSet(ModelObj):
             feature_set = FeatureSet.from_dict(feature_set)
 
         self.status = feature_set.status
+        print("self.status after reload is " + str(self.status))
         if update_spec:
             self.spec = feature_set.spec
