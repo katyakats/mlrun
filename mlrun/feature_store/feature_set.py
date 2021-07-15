@@ -220,8 +220,8 @@ class FeatureSetStatus(ModelObj):
             print("first is " + target_path + " " + target.path)
             if target.path == target_path:
                 logger.info("updating!!!!!!")
-                print("updating object" + str(self))
                 target.last_written = last_written
+                print("updating object" + str(self))
 
 
 class FeatureSet(ModelObj):
