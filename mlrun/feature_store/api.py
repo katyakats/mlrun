@@ -250,8 +250,13 @@ def ingest(
         return run_ingestion_job(
             name, featureset, run_config, source.schedule, spark_context
         )
+    else:
+        print("not here!")
+        logger.info("not here!")
 
     if mlrun_context:
+        print("CHECKING2!!!!!")
+        mlrun_context.logger.info("CHECKING2!!!!!")
         # extract ingestion parameters from mlrun context
         if featureset or source is not None:
             raise mlrun.errors.MLRunInvalidArgumentError(
@@ -264,6 +269,13 @@ def ingest(
             raise mlrun.errors.MLRunInvalidArgumentError(
                 "data source was not specified"
             )
+
+        if source.schedule and featureset.status.targets and featureset.status.targets[0].last_written:
+            print("ulala ulala setting start time")
+            mlrun_context.logger.info("ulala ulala setting start time")
+            source.start_time = featureset.status.targets[0].last_written #for now the first. later min
+            source.end_time = datetime.now()
+
         mlrun_context.logger.info(f"starting ingestion task to {featureset.uri}")
         return_df = False
 
