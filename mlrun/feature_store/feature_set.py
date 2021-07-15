@@ -220,7 +220,7 @@ class FeatureSetStatus(ModelObj):
             print("first is " + target_path + " " + target.path)
             if target.path == target_path:
                 logger.info("updating!!!!!!")
-                print("updating!!!!!!")
+                print("updating object" + str(self))
                 target.last_written = last_written
 
 
@@ -599,6 +599,7 @@ class FeatureSet(ModelObj):
             "features", []
         )  # bypass DB bug
         print("savvvving " + str(as_dict))
+        print("object when saving is " + str(self.status))
         db.store_feature_set(as_dict, tag=tag, versioned=versioned)
 
     def reload(self, update_spec=True):
