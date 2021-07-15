@@ -415,7 +415,7 @@ class BaseStoreTarget(DataTargetBase):
         return target
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         raise NotImplementedError()
 
@@ -685,7 +685,7 @@ class CSVTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         key_columns = list(key_columns.keys())
         column_list = self._get_column_list(
@@ -756,7 +756,7 @@ class NoSqlTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         key_columns = list(key_columns.keys())
         table = self._resource.uri
@@ -835,7 +835,7 @@ class StreamTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         from storey import V3ioDriver
 
@@ -879,7 +879,7 @@ class TSDBTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         key_columns = list(key_columns.keys())
         endpoint, uri = parse_v3io_path(self._target_path)
@@ -969,7 +969,7 @@ class CustomTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         attributes = copy(self.attributes)
         class_name = attributes.pop("class_name")
@@ -1007,7 +1007,7 @@ class DFTarget(BaseStoreTarget):
         self.add_writer_step(graph, after, features, key_columns, timestamp_key)
 
     def add_writer_step(
-        self, graph, after, features, key_columns=None, timestamp_key=None
+        self, graph, after, features, key_columns=None, timestamp_key=None, featureset_status=None,
     ):
         key_columns = list(key_columns.keys())
         # todo: column filter
